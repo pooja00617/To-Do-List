@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>TODO App</title>
+    <style>
+        body {
+            background-color: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border: 2px solid #a3c293;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            width: 300px;
+        }
+        .task-card {
+            background-color: #e3f4dc;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #b5d3a9;
+            border-radius: 5px;
+        }
+        .task-actions form {
+            display: inline;
+        }
+        input[type="text"] {
+            width: 80%;
+            padding: 5px;
+            margin: 5px 0;
+        }
+        button {
+            padding: 5px 10px;
+            margin: 2px;
+            cursor: pointer;
+        }
+        .del-button{
+            background-color: rgb(247, 48, 48);
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>TODO App</h2>
+
+    <form action="/insertTask" method="POST">
+        <input type="text" name="task" placeholder="Add new task" required>
+        <button type="submit">+</button>
+    </form>
+
+    <h3>Given list</h3>
+    <% tasks.forEach(task => { %>
+        <div class="task-card">
+            <strong><%= task.name %></strong><br>
+
+            <div class="task-actions">
+                <form action="/deleteTask" method="POST">
+                    <input type="hidden" name="task" value="<%= task.name %>">
+                    <button type="submit" class="del-button">🗑 Delete</button>
+                </form>
+
+                <form action="/updateTask" method="POST">
+                    <input type="hidden" name="oldName" value="<%= task.name %>">
+                    <input type="text" name="newName" value="<%= task.name %>" required>
+                    <button type="submit">✏ Update</button>
+                </form>
+            </div>
+        </div>
+    <% }) %>
+
+    <h3>Updated Tasks</h3>
+    <% updatedTasks.forEach(task => { %>
+        <div class="task-card">
+            ✅ <%= task.name %>
+        </div>
+    <% }) %>
+</div>
+</body>
+</html>
